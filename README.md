@@ -1,4 +1,4 @@
-# 🌾 Grievance Handling System (Gram Panchayat)
+# 🌾 e-Grievance Handling System for Gram Panchayat
 
 A web-based application designed to streamline the process of registering, managing, and resolving public grievances in a Gram Panchayat system.
 
