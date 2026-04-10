@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Complaints - Admin Dashboard - e-Grievance System</title>
+    <link rel="icon" type="image/png" href="../../assets/images/village_logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --secondary-green: #4caf50;
+            --light-green: #e8f5e9;
+            --dark-green: #1b5e20;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100vh;
+            background: var(--primary-green);
+            color: white;
+            padding: 20px;
+            z-index: 1050;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar .nav-link {
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar .nav-link.active-nav {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            top: 0;
+            left: 0;
+            display: none;
+            z-index: 1040;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .main-content {
+            margin-left: 0;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+            width: 100%;
+        }
+
+        /* For desktop view */
+        @media (min-width: 992px) {
+            .sidebar {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 250px;
+                width: calc(100% - 250px);
+            }
+
+            .sidebar-overlay {
+                display: none !important;
+            }
+
+            .menu-toggle {
+                display: none !important;
+            }
+        }
+
+        /* For mobile view */
+        @media (max-width: 991px) {
+            body.sidebar-open {
+                overflow: hidden;
+            }
+        }
+
+        /* Header styles */
+        .page-header {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .menu-toggle {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            margin-right: 15px;
+        }
+
+        .menu-toggle:hover {
+            background: var(--dark-green);
+        }
+
+        /* Dropdown menu in sidebar */
+        .collapse .nav-link {
+            padding-left: 30px;
+            font-size: 0.9rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--primary-green);
+            height: 100%;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-card h3 {
+            color: var(--primary-green);
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 576px) {
+            .stats-card h3 {
+                font-size: 2rem;
+            }
+        }
+
+        .status-badge {
+            font-size: 0.9rem;
+            padding: 5px 12px;
+        }
+
+        .new-complaint-btn {
+            background: linear-gradient(135deg, var(--secondary-green), var(--primary-green));
+            border: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .card {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #newForm {
+            background: var(--light-green);
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1060;
+        }
+
+        .no-edit {
+            cursor: not-allowed;
+            background-color: #f1f1f1;
+        }
+
+        /* Better Complaint Modal Layout - Responsive */
+        #viewComplaintModal .modal-dialog {
+            max-width: 1100px;
+            margin: 0.5rem;
+        }
+
+        @media (min-width: 576px) {
+            #viewComplaintModal .modal-dialog {
+                margin: 1.75rem auto;
+            }
+        }
+
+        #viewComplaintModal .modal-content {
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #viewComplaintModal .modal-body {
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        @media (min-width: 768px) {
+            #viewComplaintModal .modal-body {
+                padding: 25px 30px;
+            }
+        }
+
+        #viewComplaintModal .modal-header {
+            padding: 12px 20px;
+        }
+
+        #viewComplaintModal .modal-footer {
+            padding: 10px 20px;
+        }
+
+        /* IMPROVED TABLE RESPONSIVE STYLES */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 8px;
+        }
+
+        .table th,
+        .table td {
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        /* Better mobile table handling */
+        @media (max-width: 992px) {
+
+            .table th,
+            .table td {
+                font-size: 0.85rem;
+                padding: 0.5rem 0.4rem;
+            }
+
+            .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+
+            /* Fix dropdown selector width and prevent overflow */
+            .form-select-sm {
+                font-size: 0.75rem;
+                padding: 0.2rem 1.2rem 0.2rem 0.3rem;
+                background-position: right 0.2rem center;
+                min-width: 85px;
+                width: 100%;
+                max-width: 100px;
+            }
+
+            /* Status badge sizing */
+            .badge {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.4rem;
+                white-space: nowrap;
+            }
+        }
+
+        /* Very small screens - hide less important columns */
+        @media (max-width: 768px) {
+
+            .table th:nth-child(4),
+            .table td:nth-child(4),
+            /* Villager */
+            .table th:nth-child(6),
+            .table td:nth-child(6) {
+                /* Location */
+                display: none;
+            }
+
+            .form-select-sm {
+                min-width: 80px;
+                max-width: 90px;
+                font-size: 0.7rem;
+            }
+
+            .btn-sm {
+                padding: 0.15rem 0.3rem;
+            }
+        }
+
+        /* Extra small screens - further optimize */
+        @media (max-width: 576px) {
+
+            .table th,
+            .table td {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.2rem;
+            }
+
+            .table th:nth-child(2),
+            .table td:nth-child(2) {
+                /* Title */
+                max-width: 100px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .form-select-sm {
+                min-width: 70px;
+                max-width: 80px;
+                padding: 0.15rem 1rem 0.15rem 0.2rem;
+            }
+        }
+
+        /* Modal responsive image */
+        #vImage {
+            max-width: 100%;
+            height: auto;
+            max-height: 200px;
+        }
+
+        @media (min-width: 768px) {
+            #vImage {
+                max-height: 260px;
+            }
+        }
+
+        /* Ensure modals are above overlay */
+        .modal {
+            z-index: 1070;
+        }
+
+        .modal-backdrop {
+            z-index: 1060;
+        }
+
+        /* Header title responsive */
+        .page-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+
+        @media (min-width: 768px) {
+            .page-header h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Action buttons in table */
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        /* Status badge in table */
+        .badge {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.6rem;
+        }
+
+        /* Scroll hint for mobile */
+        .scroll-hint {
+            display: none;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 992px) {
+            .scroll-hint {
+                display: block;
+            }
+        }
+
+        /* Compact stat cards for mobile */
+        @media (max-width: 768px) {
+            .stat-card {
+                padding: 12px;
+            }
+
+            .stat-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .stat-card h6 {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column" id="mainSidebar">
+        <div class="text-center mb-4">
+            <img src="../../assets/images/village_logo.png" alt="Logo"
+                style="width:60px;height:60px;border-radius:50%;background:white;padding:5px;">
+            <h5 class="mt-2">e-Grievance</h5>
+            <small class="opacity-75">Admin Portal</small>
+        </div>
+
+        <ul class="nav flex-column flex-grow-1">
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="admin-dashboard.html">
+                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                </a>
+            </li>
+
+            <li class="nav-item mb-2">
+                <a class="nav-link active-nav" href="#">
+                    <i class="fas fa-exclamation-triangle me-2"></i> Complaints
+                </a>
+            </li>
+
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="villagers.html">
+                    <i class="fas fa-users me-2"></i> Villagers
+                </a>
+            </li>
+
+            <!-- Settings Dropdown -->
+            <li class="nav-item mb-2">
+                <a class="nav-link" data-bs-toggle="collapse" href="#settingsMenu" role="button" aria-expanded="false"
+                    aria-controls="settingsMenu">
+                    <i class="fas fa-cog me-2"></i> Settings <i class="fas fa-chevron-down ms-2 float-end"></i>
+                </a>
+                <div class="collapse" id="settingsMenu">
+                    <ul class="nav flex-column ms-3 mt-2">
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#profileModal"
+                                onclick="closeSidebar()">Update Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#passwordModal"
+                                onclick="closeSidebar()">Change Password</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                onclick="closeSidebar()">Delete Account</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+
+        <!-- Logout fixed at bottom -->
+        <div class="mt-auto">
+            <a class="nav-link" onclick="logout()" style="cursor: pointer;">
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <div class="page-header">
+            <div class="d-flex align-items-center">
+                <!-- Hamburger Menu Button - Visible only on mobile -->
+                <button class="menu-toggle d-lg-none" onclick="toggleSidebar()" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2 class="mb-0">All Complaints</h2>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="text-muted me-2 d-none d-md-inline" id="complaintCount"></span>
+                <button class="btn btn-outline-danger d-none d-sm-block" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </button>
+                <button class="btn btn-outline-danger d-sm-none" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Scroll hint for mobile -->
+        <div class="scroll-hint">
+            <i class="fas fa-arrow-left me-1"></i> Swipe to see more <i class="fas fa-arrow-right ms-1"></i>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <h6 class="text-muted">Total</h6>
+                    <h2 id="totalComplaints">0</h2>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <h6 class="text-muted">Pending</h6>
+                    <h2 id="pendingComplaints" class="text-warning">0</h2>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <h6 class="text-muted">In Progress</h6>
+                    <h2 id="progressComplaints" class="text-info">0</h2>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <h6 class="text-muted">Resolved</h6>
+                    <h2 id="resolvedComplaints" class="text-success">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Complaints Table Card -->
+        <div class="card p-2 p-md-3">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover mb-0">
+                    <thead class="table-success">
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th class="d-none d-md-table-cell">Villager</th>
+                            <th>Mobile</th>
+                            <th class="d-none d-md-table-cell">Location</th>
+                            <th>Status</th>
+                            <th>Update</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                    <tbody id="complaintsTable">
+                        <tr>
+                            <td colspan="9" class="text-center py-4">
+                                <div class="spinner-border text-success" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="mt-2">Loading complaints...</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Update Profile</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Name</label>
+                    <input id="uName" class="form-control mb-2">
+                    <label class="form-label">Mobile</label>
+                    <input id="uMobile" class="form-control mb-2 no-edit" disabled>
+                    <label class="form-label">Location</label>
+                    <textarea id="uLocation" class="form-control mb-2" rows="3"></textarea>
+                    <button class="btn btn-success w-100" onclick="updateProfile()">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div class="modal fade" id="passwordModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Change Password</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="passwordForm" onsubmit="changePassword(); return false;">
+                        <label class="form-label">Old Password</label>
+                        <input type="password" id="oldPass" class="form-control mb-2" required>
+                        <label class="form-label">New Password</label>
+                        <input type="password" id="newPass" class="form-control mb-2" required>
+                        <label class="form-label">Confirm New Password</label>
+                        <input type="password" id="confirmPass" class="form-control mb-3" required>
+                        <button type="submit" class="btn btn-success w-100">Change</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Delete Account</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger fw-bold">This action is permanent!</p>
+                    <p class="mb-3">All your data will be removed from the system.</p>
+                    <button class="btn btn-danger w-100" data-bs-dismiss="modal" onclick="openConfirmDelete()">
+                        Delete My Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="fw-bold text-danger">Are you sure you want to delete your account?</p>
+                    <p class="mb-4">This action cannot be undone.</p>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-secondary w-50" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn btn-danger w-50" onclick="finalDeleteAccount()">Yes, Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW COMPLAINT MODAL -->
+    <div class="modal fade" id="viewComplaintModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white py-2">
+                    <h5 class="modal-title mb-0">Complaint Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <!-- LEFT SIDE -->
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <strong>Title:</strong>
+                                <p class="mb-2" id="vTitle"></p>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Category:</strong>
+                                <p class="mb-2" id="vCategory"></p>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Description:</strong>
+                                <div class="border rounded p-2 bg-light" style="max-height:120px; overflow:auto;">
+                                    <span id="vDescription"></span>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Status:</strong>
+                                <span id="vStatus" class="badge bg-warning ms-2"></span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Posted On:</strong>
+                                <span id="vDate"></span>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT SIDE -->
+                        <div class="col-md-6 text-center">
+                            <strong class="d-block mb-2">Attached Image</strong>
+                            <img id="vImage" class="img-fluid rounded shadow-sm border mb-2"
+                                style="max-height:200px; object-fit:contain; display:none;">
+                            <p id="noImageText" class="text-muted">No image uploaded</p>
+
+                            <hr class="my-3">
+
+                            <div class="text-start">
+                                <div class="mb-1"><strong>Villager:</strong> <span id="vUser"></span></div>
+                                <div class="mb-1"><strong>Mobile:</strong> <span id="vMobile"></span></div>
+                                <div class="mb-1"><strong>Location:</strong> <span id="vLocation"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer py-2">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container">
+        <div id="liveToast" class="toast align-items-center text-white border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sidebar toggle functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const body = document.body;
+
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+
+            if (sidebar.classList.contains('active')) {
+                body.classList.add('sidebar-open');
+            } else {
+                body.classList.remove('sidebar-open');
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const body = document.body;
+
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            body.classList.remove('sidebar-open');
+        }
+
+        // Close sidebar when clicking on overlay
+        document.querySelector('.sidebar-overlay').addEventListener('click', closeSidebar);
+
+        // Close sidebar when pressing Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function () {
+            if (window.innerWidth >= 992) {
+                const sidebar = document.getElementById('mainSidebar');
+                const overlay = document.querySelector('.sidebar-overlay');
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.classList.remove('sidebar-open');
+            }
+
+            // Reload complaints on resize to adjust display
+            loadComplaints();
+        });
+
+        function logout() {
+            window.location.href = '../index.html';
+        }
+
+        const API = "http://127.0.0.1:5000/api/admin";
+
+        // Load profile when modal opens
+        document.getElementById("profileModal")
+            .addEventListener("show.bs.modal", async () => {
+                const res = await fetch("http://127.0.0.1:5000/api/user/profile", {
+                    credentials: "include"
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    uName.value = data.user.username;
+                    uMobile.value = data.user.mobile;
+                    uLocation.value = data.user.location || "";
+                }
+            });
+
+        async function viewComplaint(id) {
+            try {
+                const res = await fetch(`${API}/complaints/${id}/details`, {
+                    credentials: "include"
+                });
+
+                const data = await res.json();
+
+                if (!data.success) {
+                    showToast("Failed to load complaint", "danger");
+                    return;
+                }
+
+                const c = data.complaint;
+
+                vTitle.innerText = c.title;
+                vCategory.innerText = c.category;
+                vDescription.innerText = c.description;
+                vUser.innerText = c.User.username;
+                vMobile.innerText = c.User.mobile;
+                vLocation.innerText = c.location || "-";
+                vStatus.innerText = c.status;
+                vStatus.className = "badge bg-" + getStatusColor(c.status);
+                vDate.innerText = new Date(c.createdAt).toLocaleString();
+
+                // IMAGE HANDLING
+                const img = document.getElementById("vImage");
+                const noImg = document.getElementById("noImageText");
+
+                if (c.image_url) {
+                    img.src = `http://127.0.0.1:5000${c.image_url}`;
+                    img.style.display = "block";
+                    noImg.style.display = "none";
+                } else {
+                    img.style.display = "none";
+                    noImg.style.display = "block";
+                }
+
+                const modal = new bootstrap.Modal(
+                    document.getElementById("viewComplaintModal")
+                );
+                modal.show();
+
+            } catch (err) {
+                console.error(err);
+                showToast("Server error", "danger");
+            }
+        }
+
+        function showToast(message, type = "success") {
+            const toastEl = document.getElementById('liveToast');
+            const toastMsg = document.getElementById('toastMessage');
+            toastEl.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'bg-info');
+            toastEl.classList.add(`bg-${type}`);
+            toastMsg.textContent = message;
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+
+        function getStatusColor(status) {
+            if (status === "pending") return "warning";
+            if (status === "inprogress") return "info";
+            if (status === "resolved") return "success";
+            return "secondary";
+        }
+
+        async function loadComplaints() {
+            try {
+                const res = await fetch(`${API}/complaints`, {
+                    credentials: "include"
+                });
+
+                const data = await res.json();
+                const table = document.getElementById("complaintsTable");
+
+                if (data.success && data.complaints.length > 0) {
+                    // Update summary counts
+                    let total = data.complaints.length;
+                    let pending = data.complaints.filter(c => c.status === 'pending').length;
+                    let inprogress = data.complaints.filter(c => c.status === 'inprogress').length;
+                    let resolved = data.complaints.filter(c => c.status === 'resolved').length;
+
+                    document.getElementById("totalComplaints").innerText = total;
+                    document.getElementById("pendingComplaints").innerText = pending;
+                    document.getElementById("progressComplaints").innerText = inprogress;
+                    document.getElementById("resolvedComplaints").innerText = resolved;
+                    document.getElementById("complaintCount").innerText = `${total} total`;
+
+                    table.innerHTML = "";
+
+                    data.complaints.forEach(c => {
+                        table.innerHTML += `
+                            <tr>
+                                <td>${c.id}</td>
+                                <td>${c.title}</td>
+                                <td>${c.category}</td>
+                                <td class="d-none d-md-table-cell">${c.User.username}</td>
+                                <td>${c.User.mobile}</td>
+                                <td class="d-none d-md-table-cell">${c.location || '-'}</td>
+                                <td>
+                                    <span class="badge bg-${getStatusColor(c.status)}">
+                                        ${c.status}
+                                    </span>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm"
+                                    onchange="updateStatus(${c.id}, this.value)">
+                                        <option value="pending" ${c.status == "pending" ? "selected" : ""}>Pending</option>
+                                        <option value="inprogress" ${c.status == "inprogress" ? "selected" : ""}>In Progress</option>
+                                        <option value="resolved" ${c.status == "resolved" ? "selected" : ""}>Resolved</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary"
+                                        onclick="viewComplaint(${c.id})">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    table.innerHTML = `
+                        <tr>
+                            <td colspan="9" class="text-center py-4">
+                                <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                                <p class="text-muted mb-0">No complaints found</p>
+                            </td>
+                        </tr>`;
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Failed to load complaints", "danger");
+                document.getElementById("complaintsTable").innerHTML = `
+                    <tr>
+                        <td colspan="9" class="text-center py-4 text-danger">
+                            <i class="fas fa-exclamation-circle fa-2x mb-2"></i>
+                            <p class="mb-0">Error loading complaints</p>
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        async function updateStatus(id, status) {
+            try {
+                const res = await fetch(`${API}/complaints/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ status })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    showToast("Status updated successfully!", "success");
+                    loadComplaints();
+                } else {
+                    showToast(data.message || "Update failed", "danger");
+                }
+            } catch (error) {
+                console.error(error);
+                showToast("Server error while updating", "danger");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadComplaints);
+
+        async function updateProfile() {
+            const res = await fetch("http://127.0.0.1:5000/api/user/profile", {
+                method: "PUT",
+                headers: { 'Content-Type': 'application/json' },
+                credentials: "include",
+                body: JSON.stringify({
+                    username: uName.value,
+                    mobile: uMobile.value,
+                    location: uLocation.value
+                })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                showToast("Profile updated successfully!", "success");
+                const modal = bootstrap.Modal.getInstance(document.getElementById('profileModal'));
+                modal.hide();
+            } else {
+                showToast(data.message || "Update failed", "danger");
+            }
+        }
+
+        async function changePassword() {
+            if (newPass.value !== confirmPass.value) {
+                showToast("Passwords do not match", "danger");
+                return;
+            }
+
+            const res = await fetch("http://127.0.0.1:5000/api/user/change-password", {
+                method: "PUT",
+                headers: { 'Content-Type': 'application/json' },
+                credentials: "include",
+                body: JSON.stringify({
+                    oldPassword: oldPass.value,
+                    newPassword: newPass.value
+                })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                showToast("Password changed successfully!", "success");
+                const modal = bootstrap.Modal.getInstance(document.getElementById('passwordModal'));
+                modal.hide();
+                oldPass.value = "";
+                newPass.value = "";
+                confirmPass.value = "";
+            } else {
+                showToast(data.message || "Password change failed", "danger");
+            }
+        }
+
+        function openConfirmDelete() {
+            const modal = new bootstrap.Modal(
+                document.getElementById("confirmDeleteModal")
+            );
+            modal.show();
+        }
+
+        async function finalDeleteAccount() {
+            const res = await fetch(`${API}/delete-account`, {
+                method: "DELETE",
+                credentials: "include"
+            });
+
+            const data = await res.json();
+            showToast(data.message, data.success ? "success" : "danger");
+
+            if (data.success) {
+                setTimeout(() => {
+                    window.location.href = "../index.html";
+                }, 1200);
+            }
+        }
+    </script>
+</body>
+
+</html>

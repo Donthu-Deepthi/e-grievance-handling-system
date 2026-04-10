@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>e-Grievance Handling System - Grama Panchayat</title>
+    <link rel="icon" type="image/png" href="../assets/images/village_logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --secondary-green: #4caf50;
+            --light-green: #e8f5e9;
+            --dark-green: #1b5e20;
+            --accent-orange: #ff9800;
+            --accent-blue: #2196f3;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 80px;
+        }
+
+        .hero-section {
+            position: relative;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url("https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80") no-repeat center center/cover;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-green) 100%);
+        }
+
+        .navbar {
+            background-color: var(--primary-green) !important;
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .navbar-collapse {
+            transition: height 0.3s ease;
+        }
+
+        .section-title {
+            color: var(--dark-green);
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--secondary-green);
+            display: inline-block;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border-top: 5px solid var(--secondary-green);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-green);
+            margin-bottom: 20px;
+        }
+
+        .process-step {
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-green);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+
+        .stats-counter {
+            background: var(--light-green);
+            padding: 60px 0;
+            border-radius: 15px;
+            margin: 50px 0;
+        }
+
+        .counter-item h3 {
+            font-size: 3rem;
+            color: var(--primary-green);
+            font-weight: bold;
+        }
+
+        .complaint-categories {
+            padding: 60px 0;
+            background: #f8f9fa;
+        }
+
+        .category-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            background: var(--light-green);
+            transform: scale(1.05);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 15px;
+        }
+
+        footer {
+            background: var(--dark-green) !important;
+            color: white;
+        }
+
+        .faq-box {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--primary-green);
+        }
+
+        .question {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--dark-green);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .answer {
+            display: none;
+            padding-top: 15px;
+            color: #555;
+        }
+
+        .modal-dialog {
+            max-width: 95%;
+            margin: auto;
+        }
+
+        .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: var(--primary-green);
+            color: white;
+        }
+
+        .modal input {
+            font-size: 16px;
+        }
+
+        @media (max-width: 576px) {
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+
+            .modal-content {
+                max-height: 90vh;
+                overflow-y: auto;
+                border-radius: 15px;
+            }
+
+            .modal-body {
+                padding: 1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .counter-item h3 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <img style="width: 40px; height: 40px; border-radius: 50%; background: white; padding: 5px;"
+                src="../assets/images/village_logo.png" alt="Logo" />
+            <a class="navbar-brand ms-2" href="#">e-Grievance System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#process">Process</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item">
+                        <a class="btn btn-light ms-3" data-bs-toggle="modal" data-bs-target="#loginModal" href="#">Sign
+                            In</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-content container">
+            <h1>Digital Grievance Handling System</h1>
+            <p>Empowering villagers to report local issues easily and directly to Panchayat officials. Track your
+                complaints
+                in real-time and contribute to transparent governance.</p>
+            <div class="mt-4">
+                <a class="btn btn-primary-custom btn-lg me-3" data-bs-toggle="modal"
+                    data-bs-target="#signupModal">Register
+                    Complaint</a>
+                <a class="btn btn-outline-light btn-lg" href="#process">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center section-title">About Our System</h2>
+            <p class="text-center mb-5" style="font-size: 1.2rem; max-width: 900px; margin: 0 auto;">
+                A simple digital platform that allows villagers to submit complaints about local issues—such as damaged
+                roads,
+                poor water supply, or sanitation concerns—without needing to visit the Panchayat office physically.
+            </p>
+
+            <div class="row mt-5">
+                <div class="col-md-6 mb-4">
+                    <img src="../assets/images/village community.jpg" class="img-fluid rounded" alt="Village Community"
+                        style="height: 400px; width: 100%; object-fit: cover;">
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Our Core Goals</h3>
+                        <ul class="list-unstyled mt-4">
+                            <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Enable easy grievance
+                                submission
+                                with photo uploads</li>
+                            <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Provide real-time
+                                complaint
+                                tracking</li>
+                            <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Reduce physical
+                                visits to Panchayat
+                                office</li>
+                            <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Improve transparency
+                                and
+                                accountability</li>
+                            <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Maintain digital
+                                records for
+                                reporting</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="py-5">
+        <div class="container">
+            <h2 class="text-center section-title">How It Works</h2>
+            <p class="text-center mb-5" style="font-size: 1.2rem;">
+                Simple four-step process to submit and track your grievances
+            </p>
+
+            <div class="row mt-4">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="process-step">
+                        <div class="step-number">1</div>
+                        <h4>Register & Login</h4>
+                        <p>Create your account or login to the system using your mobile number or email</p>
+                        <i class="fas fa-user-plus fa-2x text-muted mt-3"></i>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="process-step">
+                        <div class="step-number">2</div>
+                        <h4>Submit Complaint</h4>
+                        <p>Select issue category, add description, and upload photos for clarity</p>
+                        <i class="fas fa-edit fa-2x text-muted mt-3"></i>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="process-step">
+                        <div class="step-number">3</div>
+                        <h4>Track Status</h4>
+                        <p>Monitor your complaint status in real-time (Pending, Accepted, Resolved)</p>
+                        <i class="fas fa-chart-line fa-2x text-muted mt-3"></i>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="process-step">
+                        <div class="step-number">4</div>
+                        <h4>Get Resolution</h4>
+                        <p>Receive updates and confirmation when your issue is resolved</p>
+                        <i class="fas fa-check-circle fa-2x text-muted mt-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Complaint Categories -->
+    <section id="categories" class="complaint-categories">
+        <div class="container">
+            <h2 class="text-center section-title">Report Issues In These Categories</h2>
+            <p class="text-center mb-5" style="font-size: 1.2rem;">
+                Select the category that best describes your grievance
+            </p>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <h5>Road & Infrastructure</h5>
+                        <p>Damaged roads, potholes, street lights, bridges</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h5>Water Supply</h5>
+                        <p>Poor water quality, irregular supply, contamination</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-trash"></i>
+                        </div>
+                        <h5>Sanitation</h5>
+                        <p>Garbage collection, drainage issues, cleanliness</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h5>Electricity</h5>
+                        <p>Power cuts, electrical hazards, meter issues</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h5>Agriculture</h5>
+                        <p>Crop issues, irrigation problems, farmer support</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h5>Education</h5>
+                        <p>School infrastructure, teacher availability, facilities</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-5">
+        <div class="container">
+            <h2 class="text-center section-title">Frequently Asked Questions</h2>
+            <p class="text-center mb-5" style="font-size: 1.2rem;">
+                Find answers to common questions about the grievance system
+            </p>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="faq-box">
+                        <div class="question" onclick="toggleFaq(this)">
+                            How do I register a complaint?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="answer">
+                            <p>To register a complaint:</p>
+                            <ol>
+                                <li>Click on "Register Complaint" button</li>
+                                <li>Create an account or login</li>
+                                <li>Select the appropriate category</li>
+                                <li>Fill in details and upload photos if available</li>
+                                <li>Submit your complaint</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="faq-box">
+                        <div class="question" onclick="toggleFaq(this)">
+                            How can I track my complaint status?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="answer">
+                            <p>After logging in, go to "My Complaints" section where you can see the real-time status of
+                                all your
+                                submitted grievances. You'll receive notifications for status updates.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-box">
+                        <div class="question" onclick="toggleFaq(this)">
+                            Do I need to visit the Panchayat office?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="answer">
+                            <p>No physical visit is required. The entire process is digital. However, for complex
+                                issues, officials
+                                may contact you for additional information or site visit.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-box">
+                        <div class="question" onclick="toggleFaq(this)">
+                            What types of issues can I report?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="answer">
+                            <p>You can report various local issues including road damage, water supply problems,
+                                sanitation issues,
+                                electricity problems, agricultural concerns, and education-related issues.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-box">
+                        <div class="question" onclick="toggleFaq(this)">
+                            Is there a mobile app available?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="answer">
+                            <p>Currently, we have a mobile-responsive website that works well on all devices. A
+                                dedicated mobile app
+                                is planned for future release.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="text-center text-lg-start text-white">
+        <div class="container pt-5">
+            <div class="row mt-3">
+                <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="../assets/images/village_logo.png" alt="Logo"
+                            style="width: 40px; height: 40px; border-radius: 50%; background: white; padding: 5px;">
+                        <h6 class="text-uppercase fw-bold ms-2 mb-0">e-Grievance System</h6>
+                    </div>
+                    <p>
+                        A digital platform for transparent grievance handling in Grama Panchayats. Empowering villagers
+                        through
+                        technology.
+                    </p>
+                </div>
+
+                <div class="col-md-4 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4">Quick Links</h6>
+                    <p><a href="#home" class="text-white text-decoration-none">Home</a></p>
+                    <p><a href="#about" class="text-white text-decoration-none">About</a></p>
+                    <p><a href="#process" class="text-white text-decoration-none">Process</a></p>
+                    <p><a href="#faq" class="text-white text-decoration-none">FAQ</a></p>
+                </div>
+
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+                    <p><i class="fas fa-envelope me-3"></i> grievance@panchayat.gov.in</p>
+                    <p><i class="fas fa-phone me-3"></i> +91 1800-XXX-XXXX</p>
+                    <p><i class="fas fa-map-marker-alt me-3"></i> Grama Panchayat Office</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2024 e-Grievance Handling System. All rights reserved.
+            <br>
+            <small>Project Guide: Dr G. Satyanarayana | Batch: 11</small>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header text-white"
+                    style="background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);">
+                    <div class="text-center w-100">
+                        <img src="../assets/images/village_logo.png" alt="Logo"
+                            style="width: 40px; height: 40px; border-radius: 50%; background: white; padding: 5px;">
+                        <h5 class="modal-title mb-0" id="loginModalLabel">Welcome Back</h5>
+                        <p class="mb-0 small opacity-75">Sign in to your account</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white position-absolute end-0 top-0 m-3"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body p-4">
+                    <form id="loginForm">
+                        <!-- Mobile Input -->
+                        <div class="mb-4">
+                            <label for="loginMobile" class="form-label fw-bold">Mobile Number <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-user text-primary"></i>
+                                </span>
+                                <input type="tel" class="form-control" id="loginMobile" placeholder="9876543210"
+                                    maxlength="10" required autocomplete="username">
+                            </div>
+                            <small class="text-muted">Use your registered 10-digit mobile number</small>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label fw-bold">Password <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-lock text-primary"></i>
+                                </span>
+                                <input type="password" class="form-control" id="loginPassword" required
+                                    autocomplete="current-password" placeholder="Enter your password">
+                                <button class="btn btn-outline-secondary" type="button" id="loginTogglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback" id="loginPasswordError">Please enter your password</div>
+                        </div>
+
+                        <!-- Remember Me & Forgot Password -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label small" for="rememberMe">
+                                    Remember me
+                                </label>
+                            </div>
+                            <a href="#" class="small text-primary text-decoration-none" data-bs-toggle="modal"
+                                data-bs-target="#forgotPasswordModal">
+                                Forgot Password?
+                            </a>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2 fw-bold mb-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        </button>
+
+                        <!-- Register Link -->
+                        <div class="text-center mt-2 pt-3 border-top">
+                            <p class="mb-0">
+                                Don't have an account?
+                                <a href="#" class="text-primary fw-bold text-decoration-none" id="goToSignup">
+                                    Register Now
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content" style="border-radius: 15px;">
+                <div class="modal-header"
+                    style="background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%); color: white;">
+                    <h6 class="modal-title mb-0" id="forgotPasswordModalLabel">Reset Password</h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="forgotPasswordForm">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-key fa-2x text-primary mb-2"></i>
+                            <p class="small text-muted">Enter your mobile number to receive reset instructions</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="resetMobile" placeholder="Enter mobile number"
+                                required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 mb-2">
+                            Send Reset Link
+                        </button>
+
+                        <button type="button" class="btn btn-outline-secondary w-100" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <button type="button" class="btn btn-link w-100" id="backToLogin">
+                            Back to Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup/Registration Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 15px; overflow: hidden; border: none;">
+                <!-- Modal Header -->
+                <div class="modal-header text-white"
+                    style="background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);">
+                    <div class="text-center w-100">
+                        <img src="../assets/images/village_logo.png" alt="Logo"
+                            style="width: 40px; height: 40px; border-radius: 50%; background: white; padding: 5px;">
+                        <h5 class="modal-title mb-0" id="signupModalLabel">Create Your Account</h5>
+                        <p class="mb-0 small opacity-75">Register to submit grievances</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white position-absolute end-0 top-0 m-3"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body p-4">
+                    <form id="signupForm">
+                        <!-- Full Name -->
+                        <div class="mb-3">
+                            <label for="signupName" class="form-label fw-bold">Full Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-user text-primary"></i>
+                                </span>
+                                <input type="text" class="form-control" id="signupName"
+                                    placeholder="Enter your full name" required>
+                            </div>
+                        </div>
+
+                        <!-- Mobile in one row -->
+                        <div class="mb-3">
+                            <label for="signupMobile" class="form-label fw-bold">Mobile <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">+91</span>
+                                <input type="tel" class="form-control" id="signupMobile" placeholder="9876543210"
+                                    maxlength="10" required autocomplete="tel">
+                            </div>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="mb-3">
+                            <label for="signupPassword" class="form-label fw-bold">Set Password <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-lock text-primary"></i>
+                                </span>
+                                <input type="password" class="form-control" id="signupPassword" required
+                                    autocomplete="new-password" placeholder="Set a password (min 6 characters)">
+                                <button class="btn btn-outline-secondary" type="button" id="signupTogglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label for="signupLocation" class="form-label fw-bold">Location <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light align-items-start pt-3">
+                                    <i class="fas fa-map-marker-alt text-primary"></i>
+                                </span>
+                                <textarea class="form-control" id="signupLocation" rows="2"
+                                    placeholder="Enter your full address with village/town" required></textarea>
+                            </div>
+                            <small class="text-muted">Include village, ward number, and landmark if possible</small>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                <label class="form-check-label small" for="termsCheck">
+                                    I agree to the <a href="#" class="text-primary text-decoration-none">Terms &
+                                        Conditions</a> and
+                                    <a href="#" class="text-primary text-decoration-none">Privacy Policy</a>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2 fw-bold">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                        </button>
+
+                        <!-- Login Link -->
+                        <div class="text-center mt-3">
+                            <p class="mb-0 small">
+                                Already have an account?
+                                <a href="#" class="text-primary fw-bold text-decoration-none" id="goToLogin">
+                                    Sign In
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        /* ✅ Correct Backend URL */
+        const API_BASE_URL = 'http://127.0.0.1:5000/api';
+
+        async function apiCall(endpoint, options = {}) {
+            const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                ...options
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Something went wrong");
+            }
+
+            return data;
+        }
+
+        /* TOAST FUNCTION */
+        function showToast(message, bg = "bg-success") {
+            const toast = document.getElementById("toastMessage");
+            toast.className = `toast align-items-center text-white ${bg} border-0`;
+            toast.querySelector(".toast-body").innerText = message;
+            new bootstrap.Toast(toast).show();
+        }
+
+        /* LOGIN PASSWORD TOGGLE */
+        document.getElementById("loginTogglePassword")
+            .addEventListener("click", function () {
+
+                const passwordInput = document.getElementById("loginPassword");
+                const icon = this.querySelector("i");
+
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                } else {
+                    passwordInput.type = "password";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
+                }
+            });
+
+        /* SIGNUP PASSWORD TOGGLE */
+        document.getElementById("signupTogglePassword")
+            .addEventListener("click", function () {
+
+                const passwordInput = document.getElementById("signupPassword");
+                const icon = this.querySelector("i");
+
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                } else {
+                    passwordInput.type = "password";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
+                }
+            });
+
+        /* AUTO CLOSE NAVBAR WHEN CLICK LINK (MOBILE) */
+        document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const navbar = document.querySelector('.navbar-collapse');
+                if (navbar.classList.contains('show')) {
+                    new bootstrap.Collapse(navbar).hide();
+                }
+            });
+        });
+
+        /* CLOSE NAVBAR WHEN CLICKING OUTSIDE (MOBILE) */
+        document.addEventListener("click", function (event) {
+
+            const navbar = document.querySelector(".navbar-collapse");
+            const toggler = document.querySelector(".navbar-toggler");
+
+            if (!navbar || !toggler) return;
+
+            const clickedInsideNavbar = navbar.contains(event.target);
+            const clickedToggler = toggler.contains(event.target);
+
+            if (!clickedInsideNavbar && !clickedToggler && navbar.classList.contains("show")) {
+                new bootstrap.Collapse(navbar).hide();
+            }
+        });
+
+        /* FAQ TOGGLE FUNCTION */
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector("i");
+
+            // Close all other answers (optional - accordion behavior)
+            document.querySelectorAll(".answer").forEach(ans => {
+                if (ans !== answer) {
+                    ans.style.display = "none";
+                }
+            });
+
+            document.querySelectorAll(".question i").forEach(ic => {
+                if (ic !== icon) {
+                    ic.classList.remove("fa-chevron-up");
+                    ic.classList.add("fa-chevron-down");
+                }
+            });
+
+            // Toggle current answer
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+                icon.classList.remove("fa-chevron-up");
+                icon.classList.add("fa-chevron-down");
+            } else {
+                answer.style.display = "block";
+                icon.classList.remove("fa-chevron-down");
+                icon.classList.add("fa-chevron-up");
+            }
+        }
+
+        /* LOGIN */
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const mobile = document.getElementById('loginMobile').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            try {
+                const data = await apiCall('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ mobile, password })
+                });
+
+                showToast("Login successful!");
+
+                setTimeout(() => {
+                    if (data.role === 'admin') {
+                        window.location.href = '/frontend/pages/admin/admin-dashboard.html';
+                    } else {
+                        window.location.href = '/frontend/pages/user/user-dashboard.html';
+                    }
+                }, 800);
+
+            } catch (error) {
+                showToast(error.message, "bg-danger");
+            }
+        });
+
+        /* REGISTER */
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = {
+                username: document.getElementById('signupName').value.trim(),
+                mobile: document.getElementById('signupMobile').value.trim(),
+                password: document.getElementById('signupPassword').value,
+                location: document.getElementById('signupLocation').value.trim()
+            };
+
+            try {
+                await apiCall('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify(formData)
+                });
+
+                showToast("Registration successful! Please login.");
+
+                bootstrap.Modal.getInstance(
+                    document.getElementById('signupModal')
+                ).hide();
+
+                setTimeout(() => {
+                    new bootstrap.Modal(
+                        document.getElementById('loginModal')
+                    ).show();
+                }, 800);
+
+            } catch (error) {
+                showToast(error.message, "bg-danger");
+            }
+        });
+
+        document.getElementById("backToLogin").addEventListener("click", function () {
+
+            const forgotModal = bootstrap.Modal.getInstance(
+                document.getElementById("forgotPasswordModal")
+            );
+
+            forgotModal.hide();
+
+            setTimeout(() => {
+                new bootstrap.Modal(
+                    document.getElementById("loginModal")
+                ).show();
+            }, 300);
+        });
+
+        /* MODAL SWITCHING LOGIC */
+
+        document.getElementById("goToSignup").addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const loginModal = bootstrap.Modal.getInstance(
+                document.getElementById("loginModal")
+            );
+
+            loginModal.hide();
+
+            setTimeout(() => {
+                new bootstrap.Modal(
+                    document.getElementById("signupModal")
+                ).show();
+            }, 300);
+        });
+
+
+        document.getElementById("goToLogin").addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const signupModal = bootstrap.Modal.getInstance(
+                document.getElementById("signupModal")
+            );
+
+            signupModal.hide();
+
+            setTimeout(() => {
+                new bootstrap.Modal(
+                    document.getElementById("loginModal")
+                ).show();
+            }, 300);
+        });
+
+        /* FIX ARIA-HIDDEN FOCUS WARNING */
+
+        const allModals = document.querySelectorAll('.modal');
+
+        allModals.forEach(modal => {
+            modal.addEventListener('hidden.bs.modal', function () {
+                if (document.activeElement) {
+                    document.activeElement.blur();
+                }
+            });
+        });
+
+        // Auto scroll input into view on focus (mobile fix)
+        document.querySelectorAll('.modal input').forEach(input => {
+            input.addEventListener('focus', function () {
+                setTimeout(() => {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            });
+        });
+    </script>
+</body>
+
+</html>
